@@ -1,89 +1,104 @@
 package Métodos;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import javax.swing.JOptionPane;
+
 import Modelo.Producto;
 import Modelo.Venta;
 
 public class Exportar {
 
- 
-    public static void exportarProductos(ArrayList<Producto> listaProductos) {
-        try {
-            File carpeta = new File("exportaciones");
-            if (!carpeta.exists()) {
-                carpeta.mkdirs(); 
-            }
+   
+    private static final String CARPETA_EXPORTACIONES = "exportaciones";
+    private static final String SEPARADOR = ";";
 
-            File archivoExcel = new File("exportaciones/productos.csv");
+    
+    private static String obtenerRutaArchivo(String nombreArchivo) {
+        File carpeta = new File(CARPETA_EXPORTACIONES);
 
-            try (PrintWriter pw = new PrintWriter(new FileWriter(archivoExcel))) {
-               
-                pw.println("Código\tNombre\tPrecio\tStock\tCategoría");
+        if (!carpeta.exists()) {
+            carpeta.mkdirs();
+        }
 
-                
-                for (Producto p : listaProductos) {
-                    pw.println(
-                        p.getCodigo() + "\t" +
-                        p.getNombre() + "\t" +
-                        p.getPrecio() + "\t" +
-                        p.getStock() + "\t" +
+        return CARPETA_EXPORTACIONES + "/" + nombreArchivo;
+    }
+
+   
+    public static void exportarProductos(List<Producto> productos) {
+
+        if (productos == null || productos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ No hay productos para exportar.");
+            return;
+        }
+
+        String rutaArchivo = obtenerRutaArchivo("productos.csv");
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(rutaArchivo))) {
+
+            
+            pw.println("Código" + SEPARADOR + "Nombre" + SEPARADOR + "Precio" 
+                       + SEPARADOR + "Stock" + SEPARADOR + "Categoría");
+
+           
+            for (Producto p : productos) {
+                pw.println(
+                        p.getCodigo() + SEPARADOR +
+                        p.getNombre() + SEPARADOR +
+                        p.getPrecio() + SEPARADOR +
+                        p.getStock() + SEPARADOR +
                         p.getCategoria()
-                    );
-                }
-
-                System.out.println("✅ Archivo de productos generado en: " + archivoExcel.getAbsolutePath());
-                JOptionPane.showMessageDialog(null,
-                        "✅ Productos exportados correctamente:\n" + archivoExcel.getAbsolutePath(),
-                        "Exportación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                );
             }
+
+            JOptionPane.showMessageDialog(null,
+                    "✅ Productos exportados correctamente en:\n" + rutaArchivo);
 
         } catch (IOException e) {
-            System.out.println("⚠️ Error al exportar productos: " + e.getMessage());
             JOptionPane.showMessageDialog(null,
-                    "⚠️ Error al exportar productos: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                    "⚠️ Error al exportar productos:\n" + e.getMessage());
         }
     }
 
-  
-    public static void exportarVentas(ArrayList<Venta> listaVentas) {
-        try {
-            File carpeta = new File("exportaciones");
-            if (!carpeta.exists()) {
-                carpeta.mkdirs(); 
-            }
+    
+    public static void exportarVentas(List<Venta> ventas) {
 
-            File archivoExcel = new File("exportaciones/ventas.csv");
+        if (ventas == null || ventas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ No hay ventas para exportar.");
+            return;
+        }
 
-            try (PrintWriter pw = new PrintWriter(new FileWriter(archivoExcel))) {
-               
-                pw.println("Producto\tCantidad\tPrecio\tDescuento\tSubtotal");
+        String rutaArchivo = obtenerRutaArchivo("ventas.csv");
 
-               
-                for (Venta v : listaVentas) {
-                    Producto p = v.getProducto();
-                    pw.println(
-                        p.getNombre() + "\t" +
-                        v.getCantidad() + "\t" +
-                        p.getPrecio() + "\t" +
-                        v.getDescuento() + "\t" +
+        try (PrintWriter pw = new PrintWriter(new FileWriter(rutaArchivo))) {
+
+            
+            pw.println("Producto" + SEPARADOR + "Cantidad" + SEPARADOR + "Precio" 
+                       + SEPARADOR + "Descuento" + SEPARADOR + "Subtotal");
+
+           
+            for (Venta v : ventas) {
+
+                pw.println(
+                        v.getProducto().getNombre() + SEPARADOR +
+                        v.getCantidad() + SEPARADOR +
+                        v.getProducto().getPrecio() + SEPARADOR +
+                        v.getDescuento() + SEPARADOR +
                         v.calcularSubtotal()
-                    );
-                }
-
-                System.out.println("✅ Archivo de ventas generado en: " + archivoExcel.getAbsolutePath());
-                JOptionPane.showMessageDialog(null,
-                        "✅ Ventas exportadas correctamente:\n" + archivoExcel.getAbsolutePath(),
-                        "Exportación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                );
             }
+
+            JOptionPane.showMessageDialog(null,
+                    "✅ Ventas exportadas correctamente en:\n" + rutaArchivo);
 
         } catch (IOException e) {
-            System.out.println("⚠️ Error al exportar ventas: " + e.getMessage());
             JOptionPane.showMessageDialog(null,
-                    "⚠️ Error al exportar ventas: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                    "⚠️ Error al exportar ventas:\n" + e.getMessage());
         }
     }
 }
+

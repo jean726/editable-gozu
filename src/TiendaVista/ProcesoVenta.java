@@ -17,189 +17,208 @@ import java.awt.event.ActionEvent;
 
 public class ProcesoVenta extends JDialog implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JTextField txtCodigo, txtNombre, txtPrecio, txtStock, txtcat, txtdes;
-	private JTable table;
-	private DefaultTableModel modeloTabla;
-	private JButton btnBuscar, btnAgregarVenta, btnFinalizarVenta, btnExportarVentas;
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
 
-	private M_Venta ventaManager = new M_Venta();
-	private M_Producto productoManager = new M_Producto();
+    private JTextField txtCodigo, txtNombre, txtPrecio, txtStock, txtCantidad, txtDescuento;
+    private JTable table;
+    private DefaultTableModel modeloTabla;
 
-	public static void main(String[] args) {
-		try {
-			ProcesoVenta dialog = new ProcesoVenta();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private JButton btnBuscar, btnAgregarVenta, btnFinalizarVenta, btnExportarVentas;
 
-	public ProcesoVenta() {
-		setTitle("Proceso de Venta");
-		setBounds(100, 100, 584, 620);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
+    private M_Venta ventaManager = new M_Venta();
+    private M_Producto productoManager = new M_Producto();
 
-		JLabel lblTitulo = new JLabel("PROCESO DE VENTA");
-		lblTitulo.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		lblTitulo.setBounds(180, 10, 250, 30);
-		contentPanel.add(lblTitulo);
+    public ProcesoVenta() {
+        setTitle("Proceso de Venta");
+        setBounds(100, 100, 600, 620);
+        getContentPane().setLayout(new BorderLayout());
+        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        contentPanel.setLayout(null);
 
-		JLabel lblCodigo = new JLabel("Código:");
-		lblCodigo.setBounds(25, 54, 60, 13);
-		contentPanel.add(lblCodigo);
+        JLabel lblTitulo = new JLabel("PROCESO DE VENTA");
+        lblTitulo.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        lblTitulo.setBounds(190, 10, 250, 30);
+        contentPanel.add(lblTitulo);
 
-		txtCodigo = new JTextField();
-		txtCodigo.setBounds(82, 51, 96, 19);
-		contentPanel.add(txtCodigo);
+        JLabel lblCodigo = new JLabel("Código:");
+        lblCodigo.setBounds(25, 54, 60, 13);
+        contentPanel.add(lblCodigo);
 
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(this);
-		btnBuscar.setBounds(210, 50, 85, 21);
-		contentPanel.add(btnBuscar);
+        txtCodigo = new JTextField();
+        txtCodigo.setBounds(82, 51, 96, 19);
+        contentPanel.add(txtCodigo);
 
-		JLabel lblNombre = new JLabel("Nombre:");
-		lblNombre.setBounds(25, 92, 60, 13);
-		contentPanel.add(lblNombre);
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.addActionListener(this);
+        btnBuscar.setBounds(210, 50, 85, 21);
+        contentPanel.add(btnBuscar);
 
-		txtNombre = new JTextField();
-		txtNombre.setBounds(82, 89, 96, 19);
-		txtNombre.setEditable(false);
-		contentPanel.add(txtNombre);
+        JLabel lblNombre = new JLabel("Nombre:");
+        lblNombre.setBounds(25, 92, 60, 13);
+        contentPanel.add(lblNombre);
 
-		JLabel lblPrecio = new JLabel("Precio:");
-		lblPrecio.setBounds(25, 131, 45, 13);
-		contentPanel.add(lblPrecio);
+        txtNombre = new JTextField();
+        txtNombre.setBounds(82, 89, 130, 19);
+        txtNombre.setEditable(false);
+        contentPanel.add(txtNombre);
 
-		txtPrecio = new JTextField();
-		txtPrecio.setBounds(82, 128, 96, 19);
-		txtPrecio.setEditable(false);
-		contentPanel.add(txtPrecio);
+        JLabel lblPrecio = new JLabel("Precio:");
+        lblPrecio.setBounds(25, 131, 45, 13);
+        contentPanel.add(lblPrecio);
 
-		JLabel lblStock = new JLabel("Stock:");
-		lblStock.setBounds(25, 168, 45, 13);
-		contentPanel.add(lblStock);
+        txtPrecio = new JTextField();
+        txtPrecio.setBounds(82, 128, 96, 19);
+        txtPrecio.setEditable(false);
+        contentPanel.add(txtPrecio);
 
-		txtStock = new JTextField();
-		txtStock.setBounds(82, 165, 96, 19);
-		txtStock.setEditable(false);
-		contentPanel.add(txtStock);
+        JLabel lblStock = new JLabel("Stock:");
+        lblStock.setBounds(25, 168, 45, 13);
+        contentPanel.add(lblStock);
 
-		JLabel lblCantidad = new JLabel("Cantidad:");
-		lblCantidad.setBounds(25, 202, 70, 13);
-		contentPanel.add(lblCantidad);
+        txtStock = new JTextField();
+        txtStock.setBounds(82, 165, 96, 19);
+        txtStock.setEditable(false);
+        contentPanel.add(txtStock);
 
-		txtcat = new JTextField();
-		txtcat.setBounds(102, 199, 76, 19);
-		contentPanel.add(txtcat);
+        JLabel lblCantidad = new JLabel("Cantidad:");
+        lblCantidad.setBounds(25, 202, 70, 13);
+        contentPanel.add(lblCantidad);
 
-		JLabel lblDescuento = new JLabel("Descuento:");
-		lblDescuento.setBounds(25, 238, 71, 13);
-		contentPanel.add(lblDescuento);
+        txtCantidad = new JTextField();
+        txtCantidad.setBounds(102, 199, 76, 19);
+        contentPanel.add(txtCantidad);
 
-		txtdes = new JTextField();
-		txtdes.setBounds(102, 235, 76, 19);
-		contentPanel.add(txtdes);
+        JLabel lblDescuento = new JLabel("Descuento:");
+        lblDescuento.setBounds(25, 238, 71, 13);
+        contentPanel.add(lblDescuento);
 
-		btnAgregarVenta = new JButton("Agregar Venta");
-		btnAgregarVenta.addActionListener(this);
-		btnAgregarVenta.setBounds(210, 276, 143, 30);
-		contentPanel.add(btnAgregarVenta);
+        txtDescuento = new JTextField();
+        txtDescuento.setBounds(102, 235, 76, 19);
+        contentPanel.add(txtDescuento);
 
-		btnExportarVentas = new JButton("Exportar Ventas");
-		btnExportarVentas.addActionListener(this);
-		btnExportarVentas.setBounds(370, 276, 143, 30);
-		contentPanel.add(btnExportarVentas);
+        btnAgregarVenta = new JButton("Agregar Venta");
+        btnAgregarVenta.addActionListener(this);
+        btnAgregarVenta.setBounds(210, 276, 143, 30);
+        contentPanel.add(btnAgregarVenta);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(25, 327, 516, 130);
-		contentPanel.add(scrollPane);
+        btnExportarVentas = new JButton("Exportar Ventas");
+        btnExportarVentas.addActionListener(this);
+        btnExportarVentas.setBounds(370, 276, 143, 30);
+        contentPanel.add(btnExportarVentas);
 
-		modeloTabla = new DefaultTableModel();
-		modeloTabla.addColumn("Código");
-		modeloTabla.addColumn("Producto");
-		modeloTabla.addColumn("Precio");
-		modeloTabla.addColumn("Cantidad");
-		modeloTabla.addColumn("Descuento");
-		modeloTabla.addColumn("Subtotal");
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(25, 327, 530, 130);
+        contentPanel.add(scrollPane);
 
-		table = new JTable(modeloTabla);
-		scrollPane.setViewportView(table);
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("Código");
+        modeloTabla.addColumn("Producto");
+        modeloTabla.addColumn("Precio");
+        modeloTabla.addColumn("Cantidad");
+        modeloTabla.addColumn("Descuento");
+        modeloTabla.addColumn("Subtotal");
 
-		btnFinalizarVenta = new JButton("Finalizar Venta");
-		btnFinalizarVenta.addActionListener(this);
-		btnFinalizarVenta.setBounds(210, 478, 143, 30);
-		contentPanel.add(btnFinalizarVenta);
-	}
+        table = new JTable(modeloTabla);
+        scrollPane.setViewportView(table);
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnBuscar) buscarProducto();
-		else if (e.getSource() == btnAgregarVenta) agregarVenta();
-		else if (e.getSource() == btnFinalizarVenta) finalizarVenta();
-		else if (e.getSource() == btnExportarVentas) Exportar.exportarVentas(ventaManager.getVentas());
-	}
+        btnFinalizarVenta = new JButton("Finalizar Venta");
+        btnFinalizarVenta.addActionListener(this);
+        btnFinalizarVenta.setBounds(210, 478, 143, 30);
+        contentPanel.add(btnFinalizarVenta);
+    }
 
-	private void buscarProducto() {
-		try {
-			int codigo = Integer.parseInt(txtCodigo.getText().trim());
-			Producto p = productoManager.buscarProducto(codigo);
+    
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnBuscar) {
+            buscarProducto();
+        } else if (e.getSource() == btnAgregarVenta) {
+            agregarVenta();
+        } else if (e.getSource() == btnFinalizarVenta) {
+            finalizarVenta();
+        } else if (e.getSource() == btnExportarVentas) {
+            Exportar.exportarVentas(ventaManager.getVentas());
+        }
+    }
 
-			if (p != null) {
-				txtNombre.setText(p.getNombre());
-				txtPrecio.setText(String.valueOf(p.getPrecio()));
-				txtStock.setText(String.valueOf(p.getStock()));
-				JOptionPane.showMessageDialog(this, "Producto encontrado y cargado correctamente.");
-			} else {
-				JOptionPane.showMessageDialog(this, "No se encontró el producto.", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(this, "Ingrese un código válido.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+    private void buscarProducto() {
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText().trim());
+            Producto producto = productoManager.buscarProducto(codigo);
 
-	private void agregarVenta() {
-		try {
-			int codigo = Integer.parseInt(txtCodigo.getText().trim());
-			int cantidad = Integer.parseInt(txtcat.getText().trim());
-			double descuento = Double.parseDouble(txtdes.getText().trim());
+            if (producto != null) {
+                txtNombre.setText(producto.getNombre());
+                txtPrecio.setText(String.valueOf(producto.getPrecio()));
+                txtStock.setText(String.valueOf(producto.getStock()));
+                JOptionPane.showMessageDialog(this, "Producto encontrado.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Producto no encontrado.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
-			Producto p = productoManager.buscarProducto(codigo);
-			if (p == null) {
-				JOptionPane.showMessageDialog(this, "Busque primero un producto válido.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			if (cantidad > p.getStock()) {
-				JOptionPane.showMessageDialog(this, "Cantidad mayor al stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Código inválido.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-			Venta nuevaVenta = new Venta(cantidad, p, descuento);
-			ventaManager.agregarVenta(nuevaVenta);
+    private void agregarVenta() {
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText().trim());
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            double descuento = Double.parseDouble(txtDescuento.getText().trim());
 
-			double subtotal = nuevaVenta.calcularSubtotal();
-			modeloTabla.addRow(new Object[]{
-					p.getCodigo(), p.getNombre(), p.getPrecio(), cantidad, descuento, subtotal
-			});
+            Producto producto = productoManager.buscarProducto(codigo);
 
-			p.setStock(p.getStock() - cantidad);
-			txtStock.setText(String.valueOf(p.getStock()));
+            if (producto == null) {
+                JOptionPane.showMessageDialog(this, "Primero busque un producto válido.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-			JOptionPane.showMessageDialog(this, "Venta agregada correctamente.");
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(this, "Ingrese valores válidos para cantidad y descuento.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+            if (cantidad <= 0) {
+                JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-	private void finalizarVenta() {
-		double total = ventaManager.calculadoraSubtotal();
-		JOptionPane.showMessageDialog(this, "Venta finalizada. Total: S/ " + total);
-		ventaManager.limpiarVenta();
-		modeloTabla.setRowCount(0);
-	}
+            if (cantidad > producto.getStock()) {
+                JOptionPane.showMessageDialog(this, "Cantidad superior al stock.", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Venta venta = new Venta(cantidad, producto, descuento);
+            ventaManager.agregarVenta(venta);
+
+            modeloTabla.addRow(new Object[] {
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    producto.getPrecio(),
+                    cantidad,
+                    descuento,
+                    venta.calcularSubtotal()
+            });
+
+          
+            producto.setStock(producto.getStock() - cantidad);
+            txtStock.setText(String.valueOf(producto.getStock()));
+
+            JOptionPane.showMessageDialog(this, "Venta agregada.");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese valores válidos para cantidad y descuento.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void finalizarVenta() {
+        double total = ventaManager.calcularTotal();
+        JOptionPane.showMessageDialog(this, "Venta finalizada.\nTotal: S/ " + total);
+
+        ventaManager.limpiarVentas();
+        modeloTabla.setRowCount(0);
+    }
 }
+
